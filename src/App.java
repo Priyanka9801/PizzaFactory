@@ -21,6 +21,6 @@ public class App {
 
 
         menuForVendor.extracted(scanner, menuForCustomer, menuForVendor);
-
+// du hgrh u84i5ub
     }
 }
