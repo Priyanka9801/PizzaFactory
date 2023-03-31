@@ -10,12 +10,11 @@ import java.util.Scanner;
 
 public class MenuForCustomer {
 
-    PizzaFactory pizzaFactory = new PizzaFactory();
     List<Order> orders = new ArrayList<>();
     Inventory inventory = new Inventory();
     double grossAmount = 0;
 
-    public void runForCustomer(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor) {
+    public void runForCustomer(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor, PizzaFactory pizzaFactory) {
         int choice;
         while (true) {
             System.out.println("Press 1 for Order a pizza");
@@ -25,12 +24,12 @@ public class MenuForCustomer {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    printPizzas();
-                    orderPizza(scanner);
-                    printInvoice();
+                    printPizzas(pizzaFactory);
+                    orderPizza(scanner, pizzaFactory);
+                    printInvoice(pizzaFactory);
                     break;
                 case 2:
-                    menuForVendor.extracted(scanner, menuForCustomer, menuForVendor);
+                    menuForVendor.extracted(scanner, menuForCustomer, menuForVendor, pizzaFactory);
                     break;
                 case 3:
                     System.exit(0);
@@ -40,28 +39,28 @@ public class MenuForCustomer {
         }
     }
 
-    private void printInvoice() {
+    private void printInvoice(PizzaFactory pizzaFactory) {
 
         System.out.println("\n------------------------INVOICE RECEIPT---------------------------");
         System.out.println("     Item             Category              Amount    ");
-        for (Order order : orders) accept(order);
+        for (Order order : orders) accept(order, pizzaFactory);
         System.out.println("                       GROSS AMOUNT TO PAY = " + grossAmount);
         System.out.println("------------------------------------------------------------------\n");
     }
 
-    private void orderPizza(Scanner scanner) {
+    private void orderPizza(Scanner scanner, PizzaFactory pizzaFactory) {
 
-        int pizzaId = getPizzaId(scanner);
-        int categoryId = getCategoryId(scanner, pizzaId);
+        int pizzaId = getPizzaId(scanner, pizzaFactory);
+        int categoryId = getCategoryId(scanner, pizzaId, pizzaFactory);
         int crustId = getCrustId(scanner);
-        int toppingId = getToppingId(scanner, pizzaId);
+        int toppingId = getToppingId(scanner, pizzaId, pizzaFactory);
         String cheese = getString(scanner);
-        int sideId = getSideId(scanner);
+        int sideId = getSideId(scanner, pizzaFactory);
         Order order = new Order(pizzaId, categoryId, crustId, toppingId, cheese.equalsIgnoreCase("y"), sideId);
         orders.add(order);
     }
 
-    private int getSideId(Scanner scanner) {
+    private int getSideId(Scanner scanner, PizzaFactory pizzaFactory) {
         System.out.println("\nWould you like to add any Sides ");
         System.out.println("SR NO            NAME                     AMOUNT");
         pizzaFactory.getSides()
@@ -100,7 +99,7 @@ public class MenuForCustomer {
         return crustId;
     }
 
-    private int getPizzaId(Scanner scanner) {
+    private int getPizzaId(Scanner scanner, PizzaFactory pizzaFactory) {
         System.out.println("\nEnter the number which you have to order");
         List<Integer> collect = pizzaFactory.getPizzas().stream()
                 .map(Pizza::getPizzaId)
@@ -113,7 +112,7 @@ public class MenuForCustomer {
         return pizzaId;
     }
 
-    private int getToppingId(Scanner scanner, int pizzaId) {
+    private int getToppingId(Scanner scanner, int pizzaId, PizzaFactory pizzaFactory) {
         System.out.println("\nEnter any topping over Pizza");
         System.out.println("SR NO            NAME                     AMOUNT");
         List<Topping> toppings = pizzaFactory.getToppings().stream()
@@ -136,7 +135,7 @@ public class MenuForCustomer {
         return toppingId;
     }
 
-    private int getCategoryId(Scanner scanner, int pizzaId) {
+    private int getCategoryId(Scanner scanner, int pizzaId, PizzaFactory pizzaFactory) {
         System.out.println("\nEnter any Category");
         System.out.println("SR NO     NAME       AMOUNT");
         pizzaFactory.getPizzas().stream()
@@ -152,7 +151,7 @@ public class MenuForCustomer {
         return categoryId;
     }
 
-    private void printPizzas() {
+    private void printPizzas(PizzaFactory pizzaFactory) {
         System.out.println("\n-----------------------------------PIZZA ORDERING SERVICE--------------------------------------");
         System.out.println("Menus for Pizza : ");
         System.out.println("ITEM NO               NAME                     AMOUNT");
@@ -166,7 +165,8 @@ public class MenuForCustomer {
                 .forEach(e -> System.out.println(e.getPizzaId() + "          " + e.getPizzaName() + "      price =" + e.getCategory()));
     }
 
-    private void accept(Order order) {
+    private void accept(Order order, PizzaFactory pizzaFactory
+    ) {
         Pizza pizza1 = pizzaFactory.getPizzas().stream()
                 .filter(pizza -> pizza.getPizzaId() == order.getPizzaId())
                 .findFirst()

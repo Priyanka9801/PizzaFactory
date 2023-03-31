@@ -12,9 +12,11 @@ public class Inventory {
             "Cheese Burst",
             "Fresh pan pizza"
     );
-    Map<String, Double> cheese = new HashMap<>() {{
+    Map<String, Double> cheese = new HashMap<>() {
+        {
         put("Cheese", 35.0);
-    }};
+    }
+    };
 
     public List<String> getCrust() {
         return crust;

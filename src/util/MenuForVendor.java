@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class MenuForVendor {
 
-    public void extracted(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor) {
+    public void extracted(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor, PizzaFactory pizzaFactory) {
         int choice;
         while (true) {
             System.out.println("Press 1 for Customer");
@@ -19,10 +19,10 @@ public class MenuForVendor {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    menuForCustomer.runForCustomer(scanner, menuForCustomer, menuForVendor);
+                    menuForCustomer.runForCustomer(scanner, menuForCustomer, menuForVendor, pizzaFactory);
                     break;
                 case 2:
-                    menuForVendor.runForVendor(scanner, menuForCustomer, menuForVendor);
+                    menuForVendor.runForVendor(scanner, menuForCustomer, menuForVendor, pizzaFactory);
                     break;
                 case 3:
                     System.exit(0);
@@ -32,7 +32,7 @@ public class MenuForVendor {
         }
     }
 
-    public void runForVendor(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor) {
+    public void runForVendor(Scanner scanner, MenuForCustomer menuForCustomer, MenuForVendor menuForVendor, PizzaFactory pizzaFactory) {
         int choice;
         while (true) {
             System.out.println("Press 1 for add a Pizza");
@@ -67,7 +67,7 @@ public class MenuForVendor {
                 case 3:
                     System.exit(0);
                 case 4:
-                    extracted(scanner, menuForCustomer, menuForVendor);
+                    extracted(scanner, menuForCustomer, menuForVendor, pizzaFactory);
                 default:
                     System.out.println("Invalid choice!!! Please make a valid choice. \\n\\n");
             }
