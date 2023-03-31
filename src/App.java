@@ -13,14 +13,12 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         PizzaFactory pizzaFactory = new PizzaFactory();
         List<Order> orders = new ArrayList<>();
-
-
         Inventory inventory = new Inventory();
         MenuForCustomer menuForCustomer = new MenuForCustomer();
         MenuForVendor menuForVendor = new MenuForVendor();
 
 
-        menuForVendor.extracted(scanner, menuForCustomer, menuForVendor);
+        menuForVendor.extracted(scanner, menuForCustomer, menuForVendor, pizzaFactory);
 
     }
 }
